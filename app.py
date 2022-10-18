@@ -38,12 +38,19 @@ def user():
         print('Here is the new user', new_user)
         return "User was created", 201
 
-@app.route('/subscribe')
-def index():
-    msg = Message('Hello from the other side', sender= 'from@example.com', recipients= ['to@example.com'])
-    msg.body = "Hey Matt, sending you a message - Shaw"
-    mail.send(msg)
-    return "Message sent!"
+@app.route('/subscribe/<int:user_id>')
+def index(user_id):
+    try:
+        user_email = users[user_id]['email']
+        user_name = users[user_id]['name']
+        print(user_email)
+        msg = Message('Hello from the other side', sender= 'from@example.com', recipients= [user_email])
+        msg.body = f"Hey {user_name}, thanks for subscribing to our email list"
+        mail.send(msg)
+        return "Message sent!"
+    except:
+        return "User not found"
+
 
 @app.route('/users/<int:user_id>', methods= ["GET", "DELETE"])
 def get_by_id(user_id):
