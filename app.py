@@ -11,10 +11,6 @@ users = [
     {'id':3, 'name':'Matt', 'email':'something2@example.com'}
 ]
 
-# print(type(users))
-# users[:] = (user for user in users if user['id'] != 1)
-# print('Here is the new list', users)
-
 @app.route('/')
 def hello():
     return 'Welcome to our API!'
@@ -37,14 +33,19 @@ def user():
 def get_by_id(user_id):
     if request.method == "GET":
         try:
-            return next(user for user in users if user['id'] == user_id)
+            return next(user for user in users if user['id'] == user_id), 200
         except:
             raise BadRequest(f"Sorry no user with that id found: {user_id}")
 
     elif request.method == "DELETE":
         try:
+            length_before = len(users)
             users[:] = (user for user in users if user['id'] != user_id)
-            return f"User with id: {user_id} was deleted"
+            length_after = len(users)
+            if length_before == length_after:
+                raise Exception('user not found')
+            else:
+                return f"User with id: {user_id} was deleted", 204
         except:
             raise BadRequest(f"Sorry no user with that id found: {user_id}")
 
