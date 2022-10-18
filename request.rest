@@ -5,6 +5,9 @@ GET http://localhost:8000/
 
 GET http://localhost:5000/users
 ###
+
+GET http://localhost:5000/subscribe
+###
 GET http://localhost:5000/users/1
 ###
 GET http://localhost:8000/lizards
