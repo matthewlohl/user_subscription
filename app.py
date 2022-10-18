@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, json
+from flask import Flask, request, jsonify, json, request
 import os
 from flask_cors import CORS
 from werkzeug.exceptions import BadRequest
@@ -23,7 +23,7 @@ with open(users) as user_file:
 
 @app.route('/')
 def hello():
-    return 'Welcome to our API!'
+    return jsonify({'message': 'Welcome to our API!'}), 200
 
 @app.route('/users', methods= ["GET", "POST"])
 def user():
