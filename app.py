@@ -1,15 +1,25 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, json
+import os
 from flask_cors import CORS
 from werkzeug.exceptions import BadRequest
+from flask_mail import Mail, Message
 
 app = Flask (__name__)
 CORS(app)
 
-users = [
-    {'id': 1, 'name':'Stefan', 'email':'something@example.com'},
-    {'id':2, 'name':'Camila', 'email':'something1@example.com'},
-    {'id':3, 'name':'Matt', 'email':'something2@example.com'}
-]
+app.config['MAIL_SERVER']='smtp.mailtrap.io'
+app.config['MAIL_PORT'] = 2525
+app.config['MAIL_USERNAME'] = '2a17158b4544d4'
+app.config['MAIL_PASSWORD'] = '257030c43b7251'
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+
+mail = Mail(app)
+
+users = os.path.join(app.static_folder, 'users.json')
+
+with open(users) as user_file:
+    users = json.load(user_file)
 
 @app.route('/')
 def hello():
@@ -28,6 +38,12 @@ def user():
         print('Here is the new user', new_user)
         return "User was created", 201
 
+@app.route('/subscribe')
+def index():
+    msg = Message('Hello from the other side', sender= 'from@example.com', recipients= ['to@example.com'])
+    msg.body = "Hey Matt, sending you a message - Shaw"
+    mail.send(msg)
+    return "Message sent!"
 
 @app.route('/users/<int:user_id>', methods= ["GET", "DELETE"])
 def get_by_id(user_id):
