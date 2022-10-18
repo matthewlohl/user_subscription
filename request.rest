@@ -3,18 +3,18 @@ GET http://localhost:5000/
 GET http://localhost:8000/
 ###
 
-GET http://localhost:5000/lizards
+GET http://localhost:5000/users
 ###
-GET http://localhost:5000/lizards/3
+GET http://localhost:5000/users/1
 ###
 GET http://localhost:8000/lizards
 ###
 
-POST http://localhost:5000/lizards
+POST http://localhost:5000/users
 Content-Type: application/json
 
 {
-"name": "red dragon", "colour": "brick red"
+"name": "Matt", "email": "matt@example.com"
 }
 
 ###
